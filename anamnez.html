@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Emine Aydar | Hasta Anamnezi</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', serif;
+        }
+
+        .a4-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 12px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        .btn-pdf {
+            background: #1f6e43;
+            color: white;
+        }
+        .btn-reset {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .paper-content {
+            padding: 20px 24px 24px 24px;
+            background: white;
+        }
+
+        /* Başlık */
+        .doc-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e4a2f;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 6px;
+            margin-bottom: 16px;
+        }
+        .doc-subhead {
+            color: #5b6e8c;
+            font-size: 0.7rem;
+            margin-top: -10px;
+            margin-bottom: 18px;
+            border-left: 3px solid #9ca3af;
+            padding-left: 10px;
+        }
+
+        /* Bölüm kartları */
+        .section-card {
+            background: #fefefe;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+        .section-header {
+            background: #f1f5f9;
+            padding: 10px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #0b4f2e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .edit-icon {
+            background: none;
+            border: none;
+            color: #8ba0b5;
+            cursor: pointer;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+            transition: 0.2s;
+        }
+        .edit-icon:hover {
+            background: #e2e8f0;
+            color: #1f6e43;
+        }
+        .section-content {
+            padding: 14px 18px;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #1e293b;
+        }
+
+        /* Liste stilleri */
+        .info-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .info-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .info-list li:before {
+            content: "•";
+            color: #2b8c5e;
+            font-weight: bold;
+            position: absolute;
+            left: 4px;
+        }
+
+        /* Tablo */
+        .updates-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+        }
+        .updates-table th, .updates-table td {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .updates-table th {
+            background: #f1f5f9;
+            font-weight: 700;
+            color: #1e5a3a;
+        }
+
+        /* Düzenlenebilir alanlar */
+        [contenteditable="true"] {
+            outline: none;
+            transition: 0.1s;
+            border-radius: 6px;
+            padding: 2px 4px;
+        }
+        [contenteditable="true"]:focus {
+            background-color: #fefce8;
+            box-shadow: 0 0 0 2px #e2e8f0;
+        }
+
+        .editable-paragraph {
+            min-height: 40px;
+        }
+
+        .footer-note {
+            font-size: 0.6rem;
+            text-align: center;
+            margin-top: 16px;
+            color: #7c8ba0;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+        }
+
+        @media (max-width: 700px) {
+            .paper-content { padding: 14px; }
+            .updates-table { font-size: 0.65rem; }
+            .updates-table th, .updates-table td { padding: 5px; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; margin: 0; }
+            .action-bar, .btn, .edit-icon { display: none; }
+            .a4-container { box-shadow: none; max-width: 100%; }
+            .paper-content { padding: 0.2in; }
+            [contenteditable="true"] { border: none; background: transparent; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+<div class="a4-container" id="reportContainer">
+    <div class="action-bar">
+        <button class="btn btn-reset" id="resetBtn"><i class="fas fa-undo-alt"></i> Varsayılana Dön</button>
+        <button class="btn btn-pdf" id="pdfBtn"><i class="fas fa-file-pdf"></i> PDF İndir (Tek A4)</button>
+    </div>
+    <div class="paper-content" id="printArea">
+        <div class="doc-title">📋 HASTA ANAMNEZİ</div>
+        <div class="doc-subhead">Emine Aydar · Detaylı Tıbbi Öykü, Sosyal Durum, Soygeçmiş ve Kronik Şikâyetler · Nisan 2026</div>
+
+        <!-- 1. SOSYAL ÖYKÜ -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-title"><i class="fas fa-users"></i> 1. Sosyal Öykü</span>
+                <button class="edit-icon" data-section="social"><i class="fas fa-pen"></i> Düzenle</button>
+            </div>
+            <div class="section-content" id="socialContent" contenteditable="true">
+                <strong>Sigara:</strong> Hiç içmemiş.<br>
+                <strong>Tandır ekmeği pişirme geçmişi:</strong> 10–15 yıl, yoğun dumana maruziyet (KOAH nedeni).<br>
+                <strong>Alkol:</strong> Yok.<br>
+                <strong>Yaşam:</strong> Evde oksijen konsantratörüne 16 saat bağımlı, yatalak değil.<br>
+                <strong>Beslenme:</strong> Az ve sık aralıklarla beslenme.
+            </div>
+        </div>
+
+        <!-- 2. SOYGEÇMİŞ -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-title"><i class="fas fa-family"></i> 2. Soygeçmiş</span>
+                <button class="edit-icon" data-section="family"><i class="fas fa-pen"></i> Düzenle</button>
+            </div>
+            <div class="section-content" id="familyContent" contenteditable="true">
+                <strong>Anne-baba:</strong> Baba vefat etmiş, anne sağ.<br>
+                <strong>Doğum sayısı:</strong> 9 doğum, 7 sağ.<br>
+                <strong>Bilinen genetik hastalık:</strong> Tiroid hastalığı (ailede).<br>
+                <strong>Ailede başka kronik hastalık öyküsü:</strong> Yok.
+            </div>
+        </div>
+
+        <!-- 3. KRONİK ŞİKÂYETLER -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-title"><i class="fas fa-notes-medical"></i> 3. Kronik Şikâyetler</span>
+                <button class="edit-icon" data-section="complaints"><i class="fas fa-pen"></i> Düzenle</button>
+            </div>
+            <div class="section-content" id="complaintsContent" contenteditable="true">
+                <ul class="info-list" style="margin:0; padding-left:0;">
+                    <li>Merdiven çıkma, yürüyüş, lavabo → aşırı yorgunluk, nefes darlığı.</li>
+                    <li>Gece uyuşmama (stres kaynaklı, Selectra ve Ketya kullanıyor).</li>
+                    <li>Sürekli öksürük, ara ara balgamlı.</li>
+                    <li><strong>!!!</strong> Karın ve bacaklarda ödem.</li>
+                    <li><strong>!!</strong> Sık sık idrar yapamama (bazen acilde sonda veya diüretik uygulanıyor).</li>
+                    <li><strong>!!!</strong> Halsizlik ve sık sık kas ağrıları. Günlük yaşamda fonksiyon kaybına neden oluyor.</li>
+                    <li>Günlük işlerini çoğunlukla kendi yapabiliyor, fakat gözlem altında olması gerekiyor (düşme riski).</li>
+                    <li>İştahta sorun yok, belirgin kilo kaybı veya alımı yok.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 4. GÜNCELLEMELER TABLOSU -->
+        <div class="section-card">
+            <div class="section-header">
+                <span class="section-title"><i class="fas fa-calendar-alt"></i> 4. Güncellemeler / Klinik Takip Notları</span>
+                <button class="edit-icon" data-section="updates"><i class="fas fa-pen"></i> Düzenle</button>
+            </div>
+            <div class="section-content" style="padding: 12px 16px;">
+                <table class="updates-table" id="updatesTable">
+                    <thead>
+                        <tr><th>TARİH</th><th>ŞİKAYETLER / DURUM</th><th>EKLENEN İLAÇ / TEDAVİ</th></tr>
+                    </thead>
+                    <tbody contenteditable="true">
+                        <tr><td>21.03.2025</td><td>Kırın Ağrısı, idrara çıkamama</td><td>Sonda takıldı, Parol verildi; NSR sempatmatik tedavi yapılmadı.</td></tr>
+                        <tr><td>23.03.2025</td><td>İdrara çıkamama</td><td>Hemokeri sebepli acil serum tedavisi uygulandı. İdrar yolu enfeksiyonu nedeniyle 9 gün boyunca antibiyotik tedavisi. Karaciğer fonksiyon testleri takip edildi.</td></tr>
+                        <tr><td>25.03.2025</td><td>İdrara çıkamama</td><td>İdrar sistemi değerlendirildi. Toraks BT ve kan tahlilleri alındı.</td></tr>
+                        <tr><td>25.09.2025</td><td>Şiddetli öksürük, nefes darlığı (%91 satürasyon, kardiyojenik pulmoner ödem şüphesi)</td><td>Kalp değerlendirmesi yapıldı. Afiladen başlandı.</td></tr>
+                        <tr><td>19.04.2026</td><td>Baygınlık, nefes darlığı, akciğer sıvısı (plevral efüzyon)</td><td>Torasentez (drenaj) uygulandı, diüretik ve sonda takıldı. Hastanede takip edildi.</td></tr>
+                    </tbody>
+                </table>
+                <div style="font-size:0.65rem; color:#7c8ba0; margin-top:8px;"><i class="fas fa-info-circle"></i> Tablo üzerine tıklayarak düzenleyebilirsiniz.</div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Emine Aydar · Hasta Anamnezi · Güncel Tıbbi Durum Özeti (Nisan 2026) · Tek A4 Sayfası
+        </div>
+    </div>
+</div>
+
+<script>
+    // Varsayılan değerleri yedekleme
+    let defaultValues = {};
+
+    function captureDefaults() {
+        defaultValues = {
+            social: document.getElementById('socialContent')?.innerHTML || "",
+            family: document.getElementById('familyContent')?.innerHTML || "",
+            complaints: document.getElementById('complaintsContent')?.innerHTML || "",
+            updates: document.getElementById('updatesTable')?.innerHTML || ""
+        };
+    }
+
+    function resetToDefault() {
+        if (defaultValues.social) document.getElementById('socialContent').innerHTML = defaultValues.social;
+        if (defaultValues.family) document.getElementById('familyContent').innerHTML = defaultValues.family;
+        if (defaultValues.complaints) document.getElementById('complaintsContent').innerHTML = defaultValues.complaints;
+        if (defaultValues.updates) document.getElementById('updatesTable').innerHTML = defaultValues.updates;
+        saveAllToLocal();
+    }
+
+    function saveAllToLocal() {
+        localStorage.setItem('anamnez_social', document.getElementById('socialContent').innerHTML);
+        localStorage.setItem('anamnez_family', document.getElementById('familyContent').innerHTML);
+        localStorage.setItem('anamnez_complaints', document.getElementById('complaintsContent').innerHTML);
+        localStorage.setItem('anamnez_updates', document.getElementById('updatesTable').innerHTML);
+    }
+
+    function loadFromLocal() {
+        let val = localStorage.getItem('anamnez_social'); if(val) document.getElementById('socialContent').innerHTML = val;
+        val = localStorage.getItem('anamnez_family'); if(val) document.getElementById('familyContent').innerHTML = val;
+        val = localStorage.getItem('anamnez_complaints'); if(val) document.getElementById('complaintsContent').innerHTML = val;
+        val = localStorage.getItem('anamnez_updates'); if(val) document.getElementById('updatesTable').innerHTML = val;
+    }
+
+    function bindAutoSave() {
+        const editableDivs = ['socialContent', 'familyContent', 'complaintsContent'];
+        editableDivs.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('blur', () => saveAllToLocal());
+                el.addEventListener('input', () => saveAllToLocal());
+            }
+        });
+        const tableBody = document.querySelector('#updatesTable tbody');
+        if (tableBody) {
+            tableBody.addEventListener('blur', () => saveAllToLocal());
+            tableBody.addEventListener('input', () => saveAllToLocal());
+        }
+    }
+
+    // Düzenleme butonları ile ilgili alana odaklanma
+    document.querySelectorAll('.edit-icon').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const section = btn.getAttribute('data-section');
+            if (section === 'social') document.getElementById('socialContent').focus();
+            else if (section === 'family') document.getElementById('familyContent').focus();
+            else if (section === 'complaints') document.getElementById('complaintsContent').focus();
+            else if (section === 'updates') {
+                const tbody = document.querySelector('#updatesTable tbody');
+                if (tbody) tbody.focus();
+            }
+        });
+    });
+
+    // PDF
+    document.getElementById('pdfBtn').addEventListener('click', async () => {
+        const element = document.getElementById('reportContainer');
+        const btn = document.getElementById('pdfBtn');
+        const orig = btn.innerText;
+        btn.innerText = '⏳ Oluşturuluyor...';
+        btn.disabled = true;
+        const opt = { 
+            margin: [0.4, 0.4, 0.4, 0.4], 
+            filename: 'Emine_Aydar_Hasta_Anamnezi.pdf', 
+            image: { quality: 0.98 }, 
+            html2canvas: { scale: 2 }, 
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } 
+        };
+        await html2pdf().set(opt).from(element).save();
+        btn.innerText = orig;
+        btn.disabled = false;
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        if (confirm("Tüm anamnez bilgilerini varsayılan haline döndürmek istediğinize emin misiniz?")) {
+            resetToDefault();
+        }
+    });
+
+    captureDefaults();
+    loadFromLocal();
+    bindAutoSave();
+    if (!localStorage.length) saveAllToLocal();
+</script>
+</body>
+</html>
