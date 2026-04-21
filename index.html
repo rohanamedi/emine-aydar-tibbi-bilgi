@@ -2,10 +2,9 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Emine Aydar | Hasta Bilgi Sistemi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Emine Aydar | Hasta Bilgi Özeti</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -15,202 +14,44 @@
         }
 
         body {
-            background: #d1d5db;
+            background: #e2e8f0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 30px 20px;
+            padding: 20px;
             font-family: 'Segoe UI', 'Roboto', 'Georgia', serif;
         }
 
-        /* Ana SPA container */
-        .spa-container {
-            width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Sekme butonları */
-        .tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 0;
-            background: #f1f5f9;
-            border-radius: 12px 12px 0 0;
-            padding: 8px 12px 0 12px;
-        }
-        .tab-btn {
-            background: #e2e8f0;
-            border: none;
-            padding: 10px 28px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #475569;
-            cursor: pointer;
-            border-radius: 20px 20px 0 0;
-            transition: 0.2s;
-            font-family: inherit;
-        }
-        .tab-btn.active {
-            background: white;
-            color: #1e6f3f;
-            border-bottom: 2px solid #1e6f3f;
-        }
-        .tab-btn:hover:not(.active) {
-            background: #cbd5e1;
-        }
-
         /* A4 kağıdı - tam boyut */
-        .a4-paper {
-            width: 800px;
-            min-height: 1130px;
-            background: white;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            border-radius: 0 0 4px 4px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .paper-content {
-            padding: 18px 24px 20px 24px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        /* Başlıklar */
-        .doc-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1e4a2f;
-            border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 4px;
-            margin-bottom: 8px;
-        }
-        .doc-subhead {
-            color: #5b6e8c;
-            font-size: 0.75rem;
-            margin-top: -6px;
-            margin-bottom: 12px;
-            border-left: 3px solid #9ca3af;
-            padding-left: 10px;
-        }
-
-        /* İki sütunlu düzen */
-        .two-columns {
-            display: flex;
-            gap: 20px;
-            margin: 4px 0 8px 0;
-        }
-        .col {
-            flex: 1;
-        }
-
-        /* Bölüm kartları */
-        .section {
-            margin-bottom: 12px;
-            break-inside: avoid;
-            page-break-inside: avoid;
-        }
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid #2b8c5e;
-            padding-left: 10px;
-            margin-bottom: 6px;
-        }
-        .section-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #0b4f2e;
-        }
-        .edit-icon {
-            background: none;
-            border: none;
-            color: #8ba0b5;
-            cursor: pointer;
-            font-size: 0.7rem;
-            padding: 4px 8px;
-            border-radius: 20px;
-            transition: 0.2s;
-        }
-        .edit-icon:hover {
-            background: #eef2ff;
-            color: #1f6e43;
-        }
-        .section-content {
-            font-size: 0.78rem;
-            line-height: 1.45;
-            color: #1e293b;
-            padding: 4px 6px;
-            background: #fefefe;
-            border-radius: 6px;
-        }
-
-        /* Tablo stili */
-        .compact-table {
+        .a4-container {
+            max-width: 900px;
             width: 100%;
-            border-collapse: collapse;
-            font-size: 0.7rem;
-            margin: 2px 0;
-        }
-        .compact-table th, .compact-table td {
-            border: 1px solid #e2e8f0;
-            padding: 4px 5px;
-            text-align: left;
-            vertical-align: top;
-        }
-        .compact-table th {
-            background: #f1f5f9;
-            font-weight: 700;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            overflow: hidden;
         }
 
-        /* Ekleme paneli */
-        .add-panel {
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-            padding: 10px 20px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .add-panel select, .add-panel input {
-            padding: 6px 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 24px;
-            font-size: 0.7rem;
-            font-family: inherit;
-        }
-        .add-panel button {
-            background: #1f6e43;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 24px;
-            color: white;
-            font-weight: 600;
-            font-size: 0.7rem;
-            cursor: pointer;
-        }
-        .action-buttons {
+        /* Buton çubuğu */
+        .action-bar {
             display: flex;
             justify-content: flex-end;
             gap: 12px;
-            padding: 8px 20px;
+            padding: 12px 20px;
             background: #f8fafc;
             border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
         }
-        .btn-pdf, .btn-reset {
-            padding: 5px 16px;
-            border-radius: 24px;
-            font-size: 0.7rem;
+        .btn {
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             border: none;
+            font-family: inherit;
         }
         .btn-pdf {
             background: #1f6e43;
@@ -220,407 +61,407 @@
             background: #e2e8f0;
             color: #334155;
         }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            width: 500px;
-            max-width: 90%;
-            border-radius: 16px;
-            padding: 20px;
-        }
-        .modal-content textarea {
-            width: 100%;
-            min-height: 200px;
-            padding: 12px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 16px;
-        }
-        .modal-buttons button {
-            padding: 6px 18px;
-            border-radius: 24px;
-            border: none;
-            cursor: pointer;
-        }
-        .save-modal {
-            background: #1f6e43;
+        .btn-edit {
+            background: #3b82f6;
             color: white;
+        }
+
+        /* İçerik - A4 boyutunda padding */
+        .paper-content {
+            padding: 20px 24px 24px 24px;
+            background: white;
+        }
+
+        /* HEADER: Kişisel bilgiler + Tanılar kartı yan yana */
+        .header-row {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .personal-card {
+            flex: 2;
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 14px 18px;
+            border: 1px solid #e2e8f0;
+        }
+        .diagnosis-card {
+            flex: 1.2;
+            background: #fef3c7;
+            border-radius: 16px;
+            padding: 14px 18px;
+            border-left: 6px solid #e67e22;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .diagnosis-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #b45309;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px dashed #fcd34d;
+            padding-bottom: 6px;
+        }
+        .diagnosis-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .diag-badge {
+            background: white;
+            border-radius: 30px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #92400e;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border: 1px solid #fed7aa;
+        }
+
+        /* Bilgi satırları */
+        .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+            align-items: baseline;
+        }
+        .info-label {
+            width: 110px;
+            font-weight: 700;
+            color: #2c5a74;
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
+        }
+        .info-value {
+            flex: 1;
+            font-size: 0.8rem;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+        .editable-text {
+            background: transparent;
+            border: none;
+            font-family: inherit;
+            font-size: 0.8rem;
+            width: 100%;
+            padding: 2px 4px;
+            border-radius: 6px;
+            transition: 0.1s;
+        }
+        .editable-text:focus {
+            outline: none;
+            background: #fefce8;
+            box-shadow: 0 0 0 2px #e2e8f0;
+        }
+
+        /* Başlık stilleri */
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0b4f2e;
+            border-left: 4px solid #2b8c5e;
+            padding-left: 12px;
+            margin: 18px 0 10px 0;
+        }
+        .section-title:first-of-type {
+            margin-top: 4px;
+        }
+
+        /* İlaç tablosu */
+        .med-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.72rem;
+            margin: 6px 0;
+        }
+        .med-table th, .med-table td {
+            border: 1px solid #e2e8f0;
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .med-table th {
+            background: #f1f5f9;
+            font-weight: 700;
+        }
+
+        /* Liste stilleri */
+        .compact-list {
+            margin: 6px 0 0 20px;
+            font-size: 0.75rem;
+            line-height: 1.45;
+        }
+        .compact-list li {
+            margin-bottom: 3px;
+        }
+
+        .footer-note {
+            font-size: 0.6rem;
+            text-align: center;
+            margin-top: 20px;
+            color: #7c8ba0;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+        }
+
+        /* Düzenleme butonu inline */
+        .edit-inline {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 0.6rem;
+            margin-left: 8px;
+        }
+        .edit-inline:hover {
+            color: #1f6e43;
+        }
+
+        @media (max-width: 700px) {
+            .paper-content { padding: 14px; }
+            .header-row { flex-direction: column; }
+            .info-label { width: 100px; }
         }
 
         @media print {
             body { background: white; padding: 0; margin: 0; }
-            .add-panel, .action-buttons, .edit-icon, .modal, .tabs, .tab-btn { display: none; }
-            .a4-paper { box-shadow: none; width: 100%; min-height: auto; }
-            .paper-content { padding: 0.3in; }
+            .action-bar, .btn, .edit-inline { display: none; }
+            .a4-container { box-shadow: none; max-width: 100%; }
+            .paper-content { padding: 0.2in; }
+            .editable-text { border: none; background: transparent; padding: 0; }
         }
     </style>
 </head>
 <body>
-<div class="spa-container">
-    <!-- Sekmeler -->
-    <div class="tabs">
-        <button class="tab-btn active" data-tab="summary">📋 Hasta Bilgi Detaylı Özeti</button>
-        <button class="tab-btn" data-tab="anamnez">📝 Hasta Anamnezi</button>
+<div class="a4-container" id="reportContainer">
+    <div class="action-bar">
+        <button class="btn btn-reset" id="resetBtn"><i class="fas fa-undo-alt"></i> Varsayılana Dön</button>
+        <button class="btn btn-pdf" id="pdfBtn"><i class="fas fa-file-pdf"></i> PDF İndir (Tek A4)</button>
     </div>
+    <div class="paper-content" id="printArea">
+        <!-- ÜST KISIM: Kişisel Bilgiler + Tanı Kümesi -->
+        <div class="header-row">
+            <!-- Sol: Kişisel Bilgiler -->
+            <div class="personal-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h3 style="font-size: 1rem; color:#1e4a2f;"><i class="fas fa-user-circle"></i> KİŞİSEL BİLGİLER</h3>
+                    <button class="edit-inline" data-field-group="personal"><i class="fas fa-pen"></i> Düzenle</button>
+                </div>
+                <div class="info-row"><span class="info-label">Ad Soyad:</span><span class="info-value" id="fullnameDisplay" contenteditable="true" class="editable-text" style="display: inline-block; width: auto;">Emine Aydar</span></div>
+                <div class="info-row"><span class="info-label">Doğum Yılı:</span><span class="info-value" id="birthDisplay" contenteditable="true">1955 (71 yaş)</span></div>
+                <div class="info-row"><span class="info-label">Kan Grubu:</span><span class="info-value" id="bloodDisplay" contenteditable="true">0 Rh+</span></div>
+                <div class="info-row"><span class="info-label">Acil (Ömer):</span><span class="info-value" id="contactOmer" contenteditable="true">0535 870 91 89 - Erzurum Aziziye</span></div>
+                <div class="info-row"><span class="info-label">Acil (Yusuf):</span><span class="info-value" id="contactYusuf" contenteditable="true">0535 290 51 89 - Diyarbakır Bağlar</span></div>
+            </div>
 
-    <!-- SAYFA 1: ÖZET -->
-    <div id="summaryPage" class="a4-paper" style="display: flex;">
-        <div class="action-buttons">
-            <button class="btn-reset" id="resetSummaryBtn">Varsayılana Dön (Özet)</button>
-            <button class="btn-pdf" id="pdfSummaryBtn">📄 PDF İndir (Özet)</button>
-        </div>
-        <div class="add-panel">
-            <select id="summarySectionSelect">
-                <option value="personal">👤 Kişisel Bilgiler</option>
-                <option value="emergency">📞 Acil İletişim</option>
-                <option value="chronicMeds">💊 Sürekli İlaçlar</option>
-                <option value="prnMeds">🩺 Geçici İlaçlar</option>
-                <option value="diagnoses">📌 Tanılar</option>
-                <option value="surgeries">🔪 Cerrahi Geçmiş</option>
-                <option value="doctors">👨‍⚕️ Doktorlar</option>
-            </select>
-            <input type="text" id="summaryNewInput" placeholder="Yeni bilgi girin..." style="flex:1;">
-            <button id="addSummaryBtn"><i class="fas fa-plus"></i> Ekle</button>
-        </div>
-        <div class="paper-content" id="summaryContent">
-            <div class="doc-title">EMİNE AYDAR – HASTA BİLGİ DETAYLI ÖZETİ</div>
-            <div class="doc-subhead">Güncel Tıbbi Durum Özeti (Nisan 2026) · Tek A4 Sayfası</div>
-            <div class="two-columns">
-                <div class="col">
-                    <div class="section" data-section="personal"><div class="section-header"><span class="section-title">👤 KİŞİSEL BİLGİLER</span><button class="edit-icon" data-section="personal"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="personalContent"><strong>Ad Soyad:</strong> Emine Aydar<br><strong>Doğum Yılı:</strong> 1955<br><strong>Kan Grubu:</strong> 0 Rh+</div></div>
-                    <div class="section" data-section="emergency"><div class="section-header"><span class="section-title">📞 ACİL İLETİŞİM</span><button class="edit-icon" data-section="emergency"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="emergencyContent"><strong>Ömer Seyfettin Aydar (Oğlu):</strong> 0535 870 91 89 Erzurum-Aziziye<br><strong>Yusuf Aydar (Oğlu):</strong> 0535 290 51 89 Diyarbakır-Bağlar</div></div>
-                    <div class="section" data-section="chronicMeds"><div class="section-header"><span class="section-title">💊 SÜREKLİ İLAÇLAR</span><button class="edit-icon" data-section="chronicMeds"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="chronicMedsContent">
-<table class="compact-table">
-	<thead>
-		<tr>
-			<th>İlaç</th>
-			<th>Doz/Zaman</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>Levotiron 200 mcg</td>
-			<td>Sabah aç karna</td>
-		</tr>
-		<tr>
-			<td>Selectra</td>
-			<td>Sabah (10:00)</td>
-		</tr>
-		<tr>
-			<td>Ecopirin</td>
-			<td>Günde 1 kez</td>
-		</tr>
-		<tr>
-			<td>Glifix</td>
-			<td>Günde 1 kez</td>
-		</tr>
-		<tr>
-			<td>Fludex SR</td>
-			<td>Günde 1 kez</td>
-		</tr>
-		<tr>
-			<td>Desal</td>
-			<td>Günde 2x1</td>
-		</tr>
-		<tr>
-			<td>Budesonid (inhaler)</td>
-			<td>Günde 1 kez</td>
-		</tr>
-		<tr>
-			<td>Tioform (inhaler)</td>
-			<td>Günde 1 kez</td>
-		</tr>
-		<tr><td>Ator</td><td>Gece 22:00</td></tr>
-		<tr><td>Ketya</td><td>Gece 22:00</td></tr>
-		<tr><td>Oksijen tedavisi</td><td>Günde ~20 saat</td></tr>
-	</tbody>
-</table></div></div>
-                    <div class="section" data-section="prnMeds"><div class="section-header"><span class="section-title">🩺 GEÇİCİ İLAÇLAR</span><button class="edit-icon" data-section="prnMeds"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="prnMedsContent"><table class="compact-table"><thead><tr><th>İlaç</th><th>Not</th></tr></thead><tbody><tr><td>Panocer</td><td>Gerektiğinde</td></tr><tr><td>Glifor</td><td>Doktor kontrolü ile</td></tr></tbody></table></div></div>
+            <!-- Sağ: Tanılar kartı (DM, Tansiyon, Kolesterol, Hipotiroidi, KOAH, KKY, KBY) -->
+            <div class="diagnosis-card">
+                <div class="diagnosis-title"><i class="fas fa-stethoscope"></i> HASTALIK TANILARI <button class="edit-inline" data-field-group="diagnosisTags" style="color:#b45309;"><i class="fas fa-edit"></i></button></div>
+                <div class="diagnosis-list" id="diagnosisTagsContainer">
+                    <!-- etiketler dinamik olarak düzenlenebilir -->
+                    <span class="diag-badge">DM (Diabetes Mellitus)</span>
+                    <span class="diag-badge">Hipertansiyon</span>
+                    <span class="diag-badge">Hiperkolesterolemi</span>
+                    <span class="diag-badge">Hipotiroidi</span>
+                    <span class="diag-badge">KOAH (İleri evre)</span>
+                    <span class="diag-badge">KKY (Kronik Kalp Yetmezliği)</span>
+                    <span class="diag-badge">KBY (Kronik Böbrek Yetmezliği - yarı kronik)</span>
                 </div>
-                <div class="col">
-                    <div class="section" data-section="diagnoses"><div class="section-header"><span class="section-title">📌 TANILAR</span><button class="edit-icon" data-section="diagnoses"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="diagnosesContent">• KOAH → İleri evre, sürekli oksijen tedavisi<br>• Akciğer sıvı birikimi + Sağ Kalp Büyümesi (19.04.2026 drenaj)<br>• Hipotansiyon (≈90/60)<br>• Hipotiroidi + Tiroidektomi<br>• Hiperkolesterolemi<br>• Geçirilmiş multiorgan yetmezliği (2025)</div></div>
-                    <div class="section" data-section="surgeries"><div class="section-header"><span class="section-title">🔪 CERRAHİ GEÇMİŞ</span><button class="edit-icon" data-section="surgeries"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="surgeriesContent">• 2023 Aralık: Total tiroidektomi + Radyoaktif iyot<br>• 2023 Ocak: Anjiyo (temiz)<br>• 2012 & 2010: Böbrek taşı ameliyatları<br>• 2008: Histerektomi</div></div>
-                    <div class="section" data-section="doctors"><div class="section-header"><span class="section-title">👨‍⚕️ DOKTORLAR (Erzurum Şehir Hast.)</span><button class="edit-icon" data-section="doctors"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="doctorsContent">• Göğüs Hast.: Uzm. Dr. Emel Özoğul Tekşut<br>• Tiroid Cerrahisi: Uzm. Dr. Mehmet Hamdi Sakarya<br>• Dahiliye: Prof. Dr. Kenan Çadırcı<br>• Kariyoloji: Uzm.Dr. Ali Fuat Korkmaz<br>• Nefroloji: Uzm.Dr. Jale Ayaloğlu</div></div>
-                </div>
+                <div style="margin-top: 8px; font-size:0.65rem; color:#92400e;"><i class="fas fa-info-circle"></i> Geçirilmiş multiorgan yetmezliği (Ağustos 2025)</div>
             </div>
         </div>
-    </div>
 
-    <!-- SAYFA 2: ANAMNEZ -->
-    <div id="anamnezPage" class="a4-paper" style="display: none;">
-        <div class="action-buttons">
-            <button class="btn-reset" id="resetAnamnezBtn">Varsayılana Dön (Anamnez)</button>
-            <button class="btn-pdf" id="pdfAnamnezBtn">📄 PDF İndir (Anamnez)</button>
-        </div>
-        <div class="add-panel">
-            <select id="anamnezSectionSelect">
-                <option value="generalAnamnez">📋 Genel Anamnez</option>
-                <option value="systems">🫀 Sistemler Sorgusu</option>
-                <option value="lab">🧪 Laboratuvar & Görüntüleme</option>
-                <option value="clinical">📋 Klinik Notlar</option>
-                <option value="extra">📅 Ek Bilgiler</option>
-            </select>
-            <input type="text" id="anamnezNewInput" placeholder="Yeni bilgi girin..." style="flex:1;">
-            <button id="addAnamnezBtn"><i class="fas fa-plus"></i> Ekle</button>
-        </div>
-        <div class="paper-content" id="anamnezContent">
-            <div class="doc-title">Emine Aydar – Hasta Anamnezi</div>
-            <div class="doc-subhead">Detaylı Tıbbi Öykü, Geçmiş Hastalıklar ve Klinik Notlar · Tek A4 Sayfası</div>
-            <div class="two-columns">
-                <div class="col">
-                    <div class="section" data-section="generalAnamnez"><div class="section-header"><span class="section-title">📋 GENEL ANAMNEZ BİLGİLERİ</span><button class="edit-icon" data-section="generalAnamnez"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="generalAnamnezContent"><strong>Aktif sorun:</strong> İleri evre KOAH, sağ kalp yetmezliği, hipotansiyon<br><strong>Başvuru:</strong> Erzurum Şehir Hastanesi, Nisan 2026 torasentez<br><strong>Özgeçmiş:</strong> Uzun yıllar sigara, 2025 multiorgan yetmezliği<br><strong>Alışkanlıklar:</strong> Sigara bırakmış, alkol yok<br><strong>Fonksiyonel durum:</strong> Evde oksijen, kısıtlı aktivite</div></div>
-                    <div class="section" data-section="systems"><div class="section-header"><span class="section-title">🫀 SİSTEMLER SORGU (ROS)</span><button class="edit-icon" data-section="systems"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="systemsContent"><strong>Solunum:</strong> Dispne, oksijen desteği, plevral efüzyon<br><strong>Kardiyovasküler:</strong> Sağ kalp büyümesi, hipotansiyon 90/60<br><strong>Endokrin:</strong> Hipotiroidi, Levotiron<br><strong>Gastrointestinal:</strong> İştah değişken<br><strong>Üroloji/Nefroloji:</strong> Böbrek taşı ameliyatları<br><strong>Jinekolojik:</strong> Histerektomi 2008</div></div>
-                    <div class="section" data-section="lab"><div class="section-header"><span class="section-title">🧪 LABORATUVAR & GÖRÜNTÜLEME</span><button class="edit-icon" data-section="lab"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="labContent"><strong>Ekokardiyografi:</strong> Sağ ventrikül genişlemesi, pulmoner HT<br><strong>Akciğer BT:</strong> Amfizem, plevral efüzyon (drene)<br><strong>Tiroid fonksiyonu:</strong> Normal (Levotiron)<br><strong>Lipid profili:</strong> LDL yüksek, Ator kullanımı</div></div>
-                </div>
-                <div class="col">
-                    <div class="section" data-section="clinical"><div class="section-header"><span class="section-title">📋 KLİNİK NOTLAR & AKTİF TAKİP</span><button class="edit-icon" data-section="clinical"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="clinicalContent"><strong>Hipotansiyon:</strong> Antihipertansif kullanılmıyor, sıvı dengesi izlemi<br><strong>Multiorgan yetmezliği (2025):</strong> Düzenli Dahiliye/Nefroloji kontrolleri<br><strong>KOAD alevlenme:</strong> İnhaler tedavi düzenli<br><strong>Psikososyal:</strong> Aile desteği tam, acil durum planı mevcut</div></div>
-                    <div class="section" data-section="extra"><div class="section-header"><span class="section-title">📅 EK BİLGİLER</span><button class="edit-icon" data-section="extra"><i class="fas fa-pen"></i> Düzenle</button></div><div class="section-content" id="extraContent"><strong>Son değerlendirme:</strong> 19-20 Nisan 2026 (torasentez sonrası ilaç revizyonu)<br><strong>Takip merkezi:</strong> Erzurum Şehir Hastanesi<br><strong>Acil durum:</strong> Ömer Seyfettin Aydar 0535 870 91 89</div></div>
-                </div>
+        <!-- KULLANILAN İLAÇLAR VE TEDAVİLER -->
+        <div class="section-title">💊 KULLANILAN İLAÇLAR VE TEDAVİLER</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 4px;">
+            <div style="flex: 1;">
+                <div style="font-weight:700; font-size:0.75rem; margin-bottom:4px;">Sürekli / Ömürlük Kullanılan İlaçlar</div>
+                <table class="med-table" id="chronicMedsTable">
+                    <thead><tr><th>İlaç / Destek</th><th>Doz & Zaman</th></tr></thead>
+                    <tbody contenteditable="true">
+                        <tr><td>Levotiron 200 mcg</td><td>Sabah aç karna</td></tr>
+                        <tr><td>Selectra</td><td>Her Sabah 10.00</td></tr>
+                        <tr><td>Benipin 4 mg</td><td>Günde 1 kez</td></tr>
+                        <tr><td>Fludex SR</td><td>Günde 1 kez</td></tr>
+                        <tr><td>Desal</td><td>Günde 1 kez</td></tr>
+                        <tr><td>Budesonid (inhaler)</td><td>Günde 1 kez</td></tr>
+                        <tr><td>Tioform (inhaler)</td><td>Günde 1 kez</td></tr>
+                        <tr><td>Ketya</td><td>Her Gece 22.00</td></tr>
+                        <tr><td>Ator</td><td>Her Gece 22.00</td></tr>
+                        <tr><td>Oksijen tedavisi</td><td>Günde ~20 saat</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 1;">
+                <div style="font-weight:700; font-size:0.75rem; margin-bottom:4px;">Geçici / Kutu Bitince Bırakılacak</div>
+                <table class="med-table" id="prnMedsTable">
+                    <thead><tr><th>İlaç</th><th>Not</th></tr></thead>
+                    <tbody contenteditable="true">
+                        <tr><td>Panocer</td><td>Gerektiğinde</td></tr>
+                        <tr><td>Glifor</td><td>Doktor kontrolü ile</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Modal -->
-<div id="editModal" class="modal">
-    <div class="modal-content">
-        <h3 id="modalTitle">Düzenle</h3>
-        <textarea id="modalTextarea" rows="10"></textarea>
-        <div class="modal-buttons">
-            <button onclick="closeModal()">İptal</button>
-            <button class="save-modal" id="saveModalBtn">Kaydet</button>
+        <!-- TANILAR VE GEÇMİŞ SAĞLIK DURUMU -->
+        <div class="section-title">📌 TANILAR VE GEÇMİŞ SAĞLIK DURUMU</div>
+        <ul class="compact-list" id="diagnosesList" contenteditable="true" style="list-style-type: disc;">
+            <li>KOAH – Sürekli oksijen tedavisi altında</li>
+            <li>Tiroid Kanseri – 2023 Aralık total tiroidektomi, 2024 Şubat radyoaktif iyot</li>
+            <li>Hipotiroidi – Levotiron ile takipte</li>
+            <li>Hipertansiyon – Benipin 4mg + Fludex SR</li>
+            <li>Hiperkolesterolemi – Atorvastatin ile kontrol altında</li>
+            <li>Geçirilmiş multiorgan yetmezliği (Ağustos 2025) – Şu an normale döndü (eGFR %83, ALT/AST normal)</li>
+            <li>Akciğer sıvı birikimi + Sağ Kalp Büyümesi (Nisan 2026 drenaj)</li>
+            <li>Hipotansiyon (≈90/60) – ilaç revizyonu yapıldı</li>
+        </ul>
+
+        <!-- CERRAHİ GEÇMİŞ -->
+        <div class="section-title">🔪 CERRAHİ GEÇMİŞ</div>
+        <ul class="compact-list" id="surgeriesList" contenteditable="true">
+            <li>2023 Aralık: Total Tiroidektomi + Radyoaktif iyot</li>
+            <li>2023 Ocak: Anjiyo (temiz)</li>
+            <li>2012 & 2010: Kapalı böbrek taşı ameliyatları (iki ayrı operasyon)</li>
+            <li>2008: Histerektomi (rahim alma)</li>
+        </ul>
+
+        <!-- TAKİP EDEN DOKTORLAR (Erzurum Şehir Hastanesi) -->
+        <div class="section-title">👨‍⚕️ TAKİP EDEN DOKTORLAR (Erzurum Şehir Hastanesi)</div>
+        <ul class="compact-list" id="doctorsList" contenteditable="true">
+            <li>Göğüs Hastalıkları: Uzm. Dr. Emel Özoğul Tekşut (KOAH ve oksijen tedavisi takibi)</li>
+            <li>Tiroid – Cerrahi Onkoloji: Uzm. Dr. Mehmet Hamdi Sakarya</li>
+            <li>Dahiliye: Prof. Dr. Kenan Çadırcı (Yoğun Bakım sonrası takip)</li>
+            <li>Kardiyoloji: Uzm.Dr. Ali Fuat Korkmaz</li>
+            <li>Nefroloji: Uzm.Dr. Jale Ayaloğlu</li>
+        </ul>
+
+        <div class="footer-note">
+            Güncel Tıbbi Durum Özeti (Nisan 2026) · Tek A4 Sayfası · Düzenlenebilir
         </div>
     </div>
 </div>
 
 <script>
-    // ============= STATE YÖNETİMİ =============
-    let summaryData = {};
-    let anamnezData = {};
-    let currentEditSection = null;
-    let currentPage = 'summary';
+    // Varsayılan değerleri yedekle
+    let defaultHtml = {};
 
-    // Özet bölümleri
-    const summarySections = ['personal', 'emergency', 'chronicMeds', 'prnMeds', 'diagnoses', 'surgeries', 'doctors'];
-    // Anamnez bölümleri
-    const anamnezSections = ['generalAnamnez', 'systems', 'lab', 'clinical', 'extra'];
+    function captureDefaults() {
+        defaultHtml = {
+            fullname: document.getElementById('fullnameDisplay')?.innerText || "Emine Aydar",
+            birth: document.getElementById('birthDisplay')?.innerText || "1955 (71 yaş)",
+            blood: document.getElementById('bloodDisplay')?.innerText || "0 Rh+",
+            contactOmer: document.getElementById('contactOmer')?.innerText || "0535 870 91 89 - Erzurum Aziziye",
+            contactYusuf: document.getElementById('contactYusuf')?.innerText || "0535 290 51 89 - Diyarbakır Bağlar",
+            diagnosisTags: document.getElementById('diagnosisTagsContainer')?.innerHTML || "",
+            diagnosesList: document.getElementById('diagnosesList')?.innerHTML || "",
+            surgeriesList: document.getElementById('surgeriesList')?.innerHTML || "",
+            doctorsList: document.getElementById('doctorsList')?.innerHTML || "",
+            chronicMeds: document.getElementById('chronicMedsTable')?.innerHTML || "",
+            prnMeds: document.getElementById('prnMedsTable')?.innerHTML || ""
+        };
+    }
 
-    function loadDefaultSummary() {
-        summarySections.forEach(section => {
-            let elem = document.getElementById(`${section}Content`);
-            if (elem) summaryData[section] = elem.innerHTML;
+    function resetToDefault() {
+        if (defaultHtml.fullname) document.getElementById('fullnameDisplay').innerText = defaultHtml.fullname;
+        if (defaultHtml.birth) document.getElementById('birthDisplay').innerText = defaultHtml.birth;
+        if (defaultHtml.blood) document.getElementById('bloodDisplay').innerText = defaultHtml.blood;
+        if (defaultHtml.contactOmer) document.getElementById('contactOmer').innerText = defaultHtml.contactOmer;
+        if (defaultHtml.contactYusuf) document.getElementById('contactYusuf').innerText = defaultHtml.contactYusuf;
+        if (defaultHtml.diagnosisTags) document.getElementById('diagnosisTagsContainer').innerHTML = defaultHtml.diagnosisTags;
+        if (defaultHtml.diagnosesList) document.getElementById('diagnosesList').innerHTML = defaultHtml.diagnosesList;
+        if (defaultHtml.surgeriesList) document.getElementById('surgeriesList').innerHTML = defaultHtml.surgeriesList;
+        if (defaultHtml.doctorsList) document.getElementById('doctorsList').innerHTML = defaultHtml.doctorsList;
+        if (defaultHtml.chronicMeds) document.getElementById('chronicMedsTable').innerHTML = defaultHtml.chronicMeds;
+        if (defaultHtml.prnMeds) document.getElementById('prnMedsTable').innerHTML = defaultHtml.prnMeds;
+        saveAllToLocal();
+    }
+
+    // LocalStorage kaydetme
+    function saveAllToLocal() {
+        localStorage.setItem('summary_fullname', document.getElementById('fullnameDisplay').innerText);
+        localStorage.setItem('summary_birth', document.getElementById('birthDisplay').innerText);
+        localStorage.setItem('summary_blood', document.getElementById('bloodDisplay').innerText);
+        localStorage.setItem('summary_contactOmer', document.getElementById('contactOmer').innerText);
+        localStorage.setItem('summary_contactYusuf', document.getElementById('contactYusuf').innerText);
+        localStorage.setItem('summary_diagnosisTags', document.getElementById('diagnosisTagsContainer').innerHTML);
+        localStorage.setItem('summary_diagnosesList', document.getElementById('diagnosesList').innerHTML);
+        localStorage.setItem('summary_surgeriesList', document.getElementById('surgeriesList').innerHTML);
+        localStorage.setItem('summary_doctorsList', document.getElementById('doctorsList').innerHTML);
+        localStorage.setItem('summary_chronicMeds', document.getElementById('chronicMedsTable').innerHTML);
+        localStorage.setItem('summary_prnMeds', document.getElementById('prnMedsTable').innerHTML);
+    }
+
+    function loadFromLocal() {
+        let val = localStorage.getItem('summary_fullname'); if(val) document.getElementById('fullnameDisplay').innerText = val;
+        val = localStorage.getItem('summary_birth'); if(val) document.getElementById('birthDisplay').innerText = val;
+        val = localStorage.getItem('summary_blood'); if(val) document.getElementById('bloodDisplay').innerText = val;
+        val = localStorage.getItem('summary_contactOmer'); if(val) document.getElementById('contactOmer').innerText = val;
+        val = localStorage.getItem('summary_contactYusuf'); if(val) document.getElementById('contactYusuf').innerText = val;
+        val = localStorage.getItem('summary_diagnosisTags'); if(val) document.getElementById('diagnosisTagsContainer').innerHTML = val;
+        val = localStorage.getItem('summary_diagnosesList'); if(val) document.getElementById('diagnosesList').innerHTML = val;
+        val = localStorage.getItem('summary_surgeriesList'); if(val) document.getElementById('surgeriesList').innerHTML = val;
+        val = localStorage.getItem('summary_doctorsList'); if(val) document.getElementById('doctorsList').innerHTML = val;
+        val = localStorage.getItem('summary_chronicMeds'); if(val) document.getElementById('chronicMedsTable').innerHTML = val;
+        val = localStorage.getItem('summary_prnMeds'); if(val) document.getElementById('prnMedsTable').innerHTML = val;
+    }
+
+    function bindAutoSave() {
+        const editableElements = document.querySelectorAll('[contenteditable="true"], .editable-text');
+        editableElements.forEach(el => {
+            el.addEventListener('blur', () => saveAllToLocal());
+            el.addEventListener('input', () => saveAllToLocal());
+        });
+        // Tablo içerikleri için (contenteditable tbody)
+        document.querySelectorAll('#chronicMedsTable tbody, #prnMedsTable tbody').forEach(tbody => {
+            tbody.addEventListener('blur', () => saveAllToLocal());
+            tbody.addEventListener('input', () => saveAllToLocal());
         });
     }
-    function loadDefaultAnamnez() {
-        anamnezSections.forEach(section => {
-            let elem = document.getElementById(`${section}Content`);
-            if (elem) anamnezData[section] = elem.innerHTML;
-        });
-    }
-
-    function saveSummaryToLocal() {
-        for (let key in summaryData) {
-            localStorage.setItem(`emine_summary_${key}`, summaryData[key]);
-        }
-    }
-    function saveAnamnezToLocal() {
-        for (let key in anamnezData) {
-            localStorage.setItem(`emine_anamnez_${key}`, anamnezData[key]);
-        }
-    }
-
-    function loadSummaryFromLocal() {
-        for (let key in summaryData) {
-            let saved = localStorage.getItem(`emine_summary_${key}`);
-            if (saved !== null) {
-                summaryData[key] = saved;
-                let elem = document.getElementById(`${key}Content`);
-                if (elem) elem.innerHTML = saved;
-            }
-        }
-    }
-    function loadAnamnezFromLocal() {
-        for (let key in anamnezData) {
-            let saved = localStorage.getItem(`emine_anamnez_${key}`);
-            if (saved !== null) {
-                anamnezData[key] = saved;
-                let elem = document.getElementById(`${key}Content`);
-                if (elem) elem.innerHTML = saved;
-            }
-        }
-    }
-
-    function updateSummaryUI() {
-        for (let key in summaryData) {
-            let elem = document.getElementById(`${key}Content`);
-            if (elem) elem.innerHTML = summaryData[key];
-        }
-    }
-    function updateAnamnezUI() {
-        for (let key in anamnezData) {
-            let elem = document.getElementById(`${key}Content`);
-            if (elem) elem.innerHTML = anamnezData[key];
-        }
-    }
-
-    // Modal işlemleri
-    function openModal(sectionKey, currentHtml, pageType) {
-        currentEditSection = { key: sectionKey, page: pageType };
-        let textarea = document.getElementById('modalTextarea');
-        // HTML'den düz metin
-        let temp = document.createElement('div');
-        temp.innerHTML = currentHtml;
-        temp.querySelectorAll('br').forEach(br => br.replaceWith('\n'));
-        let text = temp.innerText || temp.textContent;
-        textarea.value = text;
-        document.getElementById('modalTitle').innerText = `Düzenle: ${sectionKey}`;
-        document.getElementById('editModal').style.display = 'flex';
-    }
-
-    function closeModal() {
-        document.getElementById('editModal').style.display = 'none';
-    }
-    window.closeModal = closeModal;
-
-    document.getElementById('saveModalBtn').onclick = () => {
-        if (currentEditSection) {
-            let newText = document.getElementById('modalTextarea').value;
-            let newHtml = newText.replace(/\n/g, '<br>');
-            if (currentEditSection.page === 'summary') {
-                summaryData[currentEditSection.key] = newHtml;
-                updateSummaryUI();
-                saveSummaryToLocal();
-            } else {
-                anamnezData[currentEditSection.key] = newHtml;
-                updateAnamnezUI();
-                saveAnamnezToLocal();
-            }
-        }
-        closeModal();
-    };
-
-    // Düzenleme butonlarını bağlama (dinamik)
-    function bindEditButtons(pageType) {
-        let btns = document.querySelectorAll(`#${pageType === 'summary' ? 'summaryPage' : 'anamnezPage'} .edit-icon`);
-        btns.forEach(btn => {
-            btn.removeEventListener('click', window.editHandler);
-            let sectionKey = btn.getAttribute('data-section');
-            let handler = () => {
-                let currentHtml = pageType === 'summary' ? summaryData[sectionKey] : anamnezData[sectionKey];
-                openModal(sectionKey, currentHtml, pageType);
-            };
-            btn.addEventListener('click', handler);
-            window.editHandler = handler;
-        });
-    }
-
-    // Dropdown ile ekleme
-    document.getElementById('addSummaryBtn')?.addEventListener('click', () => {
-        let selected = document.getElementById('summarySectionSelect').value;
-        let newInfo = document.getElementById('summaryNewInput').value.trim();
-        if (!newInfo) return;
-        let current = summaryData[selected];
-        summaryData[selected] = current + `<br>• ${newInfo}`;
-        updateSummaryUI();
-        saveSummaryToLocal();
-        document.getElementById('summaryNewInput').value = '';
-    });
-
-    document.getElementById('addAnamnezBtn')?.addEventListener('click', () => {
-        let selected = document.getElementById('anamnezSectionSelect').value;
-        let newInfo = document.getElementById('anamnezNewInput').value.trim();
-        if (!newInfo) return;
-        let current = anamnezData[selected];
-        anamnezData[selected] = current + `<br>• ${newInfo}`;
-        updateAnamnezUI();
-        saveAnamnezToLocal();
-        document.getElementById('anamnezNewInput').value = '';
-    });
-
-    // Reset
-    document.getElementById('resetSummaryBtn')?.addEventListener('click', () => {
-        loadDefaultSummary();
-        updateSummaryUI();
-        saveSummaryToLocal();
-    });
-    document.getElementById('resetAnamnezBtn')?.addEventListener('click', () => {
-        loadDefaultAnamnez();
-        updateAnamnezUI();
-        saveAnamnezToLocal();
-    });
 
     // PDF
-    async function generatePDF(element, filename) {
-        const opt = { margin: [0.4, 0.4, 0.4, 0.4], filename: filename, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+    document.getElementById('pdfBtn').addEventListener('click', async () => {
+        const element = document.getElementById('reportContainer');
+        const btn = document.getElementById('pdfBtn');
+        const orig = btn.innerText;
+        btn.innerText = '⏳ Oluşturuluyor...';
+        btn.disabled = true;
+        const opt = { margin: [0.4, 0.4, 0.4, 0.4], filename: 'Emine_Aydar_Hasta_Bilgi_Ozeti.pdf', image: { quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
         await html2pdf().set(opt).from(element).save();
-    }
-    document.getElementById('pdfSummaryBtn')?.addEventListener('click', async () => {
-        let btn = document.getElementById('pdfSummaryBtn');
-        let orig = btn.innerText;
-        btn.innerText = '⏳ Hazırlanıyor...';
-        btn.disabled = true;
-        await generatePDF(document.getElementById('summaryPage'), 'Emine_Aydar_Hasta_Bilgi_Ozeti.pdf');
-        btn.innerText = orig;
-        btn.disabled = false;
-    });
-    document.getElementById('pdfAnamnezBtn')?.addEventListener('click', async () => {
-        let btn = document.getElementById('pdfAnamnezBtn');
-        let orig = btn.innerText;
-        btn.innerText = '⏳ Hazırlanıyor...';
-        btn.disabled = true;
-        await generatePDF(document.getElementById('anamnezPage'), 'Emine_Aydar_Hasta_Anamnezi.pdf');
         btn.innerText = orig;
         btn.disabled = false;
     });
 
-    // Tab geçişleri (SPA)
-    const summaryPage = document.getElementById('summaryPage');
-    const anamnezPage = document.getElementById('anamnezPage');
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            if (btn.getAttribute('data-tab') === 'summary') {
-                summaryPage.style.display = 'flex';
-                anamnezPage.style.display = 'none';
-                currentPage = 'summary';
-                bindEditButtons('summary');
-            } else {
-                summaryPage.style.display = 'none';
-                anamnezPage.style.display = 'flex';
-                currentPage = 'anamnez';
-                bindEditButtons('anamnez');
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        resetToDefault();
+    });
+
+    // Düzenleme butonları (kolaylık için)
+    document.querySelectorAll('.edit-inline').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const target = e.currentTarget.getAttribute('data-field-group');
+            if (target === 'personal') {
+                document.getElementById('fullnameDisplay').focus();
+            } else if (target === 'diagnosisTags') {
+                const newTag = prompt("Yeni tanı eklemek veya mevcutları düzenlemek için etiketleri virgülle ayırarak yazın:\nÖrnek: DM, Hipertansiyon, KOAH, KKY, KBY", 
+                    Array.from(document.querySelectorAll('#diagnosisTagsContainer .diag-badge')).map(b => b.innerText).join(', '));
+                if (newTag) {
+                    const tags = newTag.split(',').map(t => t.trim()).filter(t => t);
+                    const container = document.getElementById('diagnosisTagsContainer');
+                    container.innerHTML = tags.map(t => `<span class="diag-badge">${t}</span>`).join('');
+                    saveAllToLocal();
+                }
             }
         });
     });
 
-    // Başlangıç
-    loadDefaultSummary();
-    loadDefaultAnamnez();
-    loadSummaryFromLocal();
-    loadAnamnezFromLocal();
-    bindEditButtons('summary');
+    captureDefaults();
+    loadFromLocal();
+    bindAutoSave();
+    if (!localStorage.length) saveAllToLocal();
 </script>
 </body>
 </html>
