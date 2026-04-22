@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Emine Aydar | Hastane Başvuruları & Müdahale Geçmişi</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', 'Roboto', 'Georgia', serif;
+        }
+
+        .a4-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.15);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        .btn-pdf {
+            background: #1f6e43;
+            color: white;
+        }
+        .btn-reset {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        .btn-add {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .paper-content {
+            padding: 20px 24px 24px 24px;
+            background: white;
+        }
+
+        .doc-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e4a2f;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 6px;
+            margin-bottom: 16px;
+        }
+        .doc-subhead {
+            color: #5b6e8c;
+            font-size: 0.7rem;
+            margin-top: -10px;
+            margin-bottom: 18px;
+            border-left: 3px solid #9ca3af;
+            padding-left: 10px;
+        }
+
+        /* Ekleme formu */
+        .add-form {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+        }
+        .form-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        .form-group label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #2c5a74;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        /* Tablo */
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            margin-top: 8px;
+        }
+        .records-table th, .records-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .records-table th {
+            background: #f1f5f9;
+            font-weight: 700;
+            color: #1e5a3a;
+        }
+        .records-table td {
+            background: white;
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 6px;
+            border-radius: 20px;
+        }
+        .delete-btn:hover {
+            background: #fee2e2;
+        }
+        .edit-btn {
+            background: none;
+            border: none;
+            color: #3b82f6;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 6px;
+            border-radius: 20px;
+            margin-right: 4px;
+        }
+        .edit-btn:hover {
+            background: #dbeafe;
+        }
+
+        .footer-note {
+            font-size: 0.6rem;
+            text-align: center;
+            margin-top: 20px;
+            color: #7c8ba0;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 750px) {
+            .paper-content { padding: 14px; }
+            .form-grid { flex-direction: column; }
+            .records-table { font-size: 0.65rem; }
+            .records-table th, .records-table td { padding: 6px 4px; }
+        }
+
+        @media print {
+            body { background: white; padding: 0; margin: 0; }
+            .action-bar, .add-form, .btn, .delete-btn, .edit-btn { display: none; }
+            .a4-container { box-shadow: none; max-width: 100%; }
+            .paper-content { padding: 0.2in; }
+        }
+    </style>
+</head>
+<body>
+<div class="a4-container" id="reportContainer">
+    <div class="action-bar">
+        <div class="btn-group">
+            <button class="btn btn-reset" id="resetBtn"><i class="fas fa-undo-alt"></i> Varsayılana Dön</button>
+            <button class="btn btn-pdf" id="pdfBtn"><i class="fas fa-file-pdf"></i> PDF İndir</button>
+        </div>
+    </div>
+    <div class="paper-content" id="printArea">
+        <div class="doc-title">🏥 HASTANE BAŞVURULARI & MÜDAHALE GEÇMİŞİ</div>
+        <div class="doc-subhead">Emine Aydar · Acil ve Poliklinik Başvuruları, Yapılan Müdahaleler, İlaç Değişiklikleri · Kronolojik Sıralı</div>
+
+        <!-- EKLEME FORMU -->
+        <div class="add-form">
+            <div style="font-weight: 700; margin-bottom: 12px; font-size: 0.85rem;"><i class="fas fa-plus-circle"></i> Yeni Başvuru Ekle</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Tarih</label>
+                    <input type="date" id="visitDate" value="2026-04-19">
+                </div>
+                <div class="form-group">
+                    <label>Bölüm / Birim</label>
+                    <select id="visitDept">
+                        <option value="Acil">🚨 Acil Servis</option>
+                        <option value="Dahiliye">🏥 Dahiliye</option>
+                        <option value="Göğüs Hastalıkları">🫁 Göğüs Hastalıkları</option>
+                        <option value="Kardiyoloji">❤️ Kardiyoloji</option>
+                        <option value="Nefroloji">🩸 Nefroloji</option>
+                        <option value="Cerrahi Onkoloji">🔪 Cerrahi Onkoloji</option>
+                        <option value="Yoğun Bakım">🆘 Yoğun Bakım</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Şikayet / Götürülme Nedeni</label>
+                    <input type="text" id="complaint" placeholder="örn: Nefes darlığı, baygınlık, idrar yapamama...">
+                </div>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Yapılan İşlem / Müdahale</label>
+                    <input type="text" id="procedure" placeholder="örn: Torasentez, sonda takılması, serum, diüretik">
+                </div>
+                <div class="form-group">
+                    <label>İlaç Değişiklikleri</label>
+                    <input type="text" id="medChanges" placeholder="örn: Delif kesildi, Fludex başlandı">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Ek Notlar / Doktor Görüşü</label>
+                <textarea id="extraNotes" rows="2" placeholder="Doktor düşünceleri, tavsiyeler, taburcu notları..."></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-add" id="addRecordBtn"><i class="fas fa-save"></i> Kaydet (Tarihe Göre Sıralanacak)</button>
+            </div>
+        </div>
+
+        <!-- KAYITLAR TABLOSU -->
+        <div id="recordsContainer">
+            <table class="records-table" id="recordsTable">
+                <thead>
+                    <tr>
+                        <th style="width: 90px">TARİH</th>
+                        <th style="width: 100px">BÖLÜM</th>
+                        <th>ŞİKAYET / NEDEN</th>
+                        <th>YAPILAN İŞLEM</th>
+                        <th>İLAÇ DEĞİŞİKLİKLERİ</th>
+                        <th>EK NOTLAR</th>
+                        <th style="width: 60px">İŞLEM</th>
+                    </tr>
+                </thead>
+                <tbody id="recordsTbody">
+                    <!-- Dinamik doldurulacak -->
+                </tbody>
+            </table>
+        </div>
+        <div class="footer-note">
+            Kronolojik sıralı başvuru geçmişi · Yeni kayıtlar otomatik olarak tarihe göre sıralanır · Düzenle/Sil butonları ile yönetebilirsiniz.
+        </div>
+    </div>
+</div>
+
+<script>
+    // Varsayılan başvuru verileri (fotoğraftaki ve hastanın gerçek verileriyle)
+    let records = [
+        {
+            id: "rec1",
+            date: "2025-03-21",
+            department: "Acil",
+            complaint: "Kırıklık ağrısı, idrara çıkamama",
+            procedure: "Sonda takıldı, Parol verildi; NSR sempatik tedavi yapılmadı.",
+            medChanges: "Parol (gerektiğinde)",
+            extraNotes: "Acil hekimi değerlendirmesi: İdrar retansiyonu, gözlem önerildi."
+        },
+        {
+            id: "rec2",
+            date: "2025-03-23",
+            department: "Acil",
+            complaint: "İdrara çıkamama (tekrarlayan)",
+            procedure: "Hemokeri sebebiyle acil serum tedavisi, idrar yolu enfeksiyonu nedeniyle antibiyotik başlandı (9 gün). Karaciğer fonksiyon testleri takip edildi.",
+            medChanges: "Antibiyotik tedavisi eklendi",
+            extraNotes: "Enfeksiyon nedeniyle nefroloji konsültasyonu istendi."
+        },
+        {
+            id: "rec3",
+            date: "2025-03-25",
+            department: "Üroloji",
+            complaint: "İdrar yapma güçlüğü",
+            procedure: "İdrar sistemi değerlendirmesi yapıldı. Toraks BT ve kan tahlilleri alındı.",
+            medChanges: "Mevcut ilaçlara eklenmedi",
+            extraNotes: "BT sonucunda plevral efüzyon şüphesi not edildi."
+        },
+        {
+            id: "rec4",
+            date: "2025-09-25",
+            department: "Kardiyoloji",
+            complaint: "Şiddetli öksürük, nefes darlığı (%91 satürasyon, kardiyojenik pulmoner ödem şüphesi)",
+            procedure: "Kalp değerlendirmesi yapıldı, ekokardiyografi. Afiladen başlandı.",
+            medChanges: "Afiladen tedavisi eklendi",
+            extraNotes: "Kardiyoloji: Sağ kalp yükü, diüretik tedavisi düzenlendi."
+        },
+        {
+            id: "rec5",
+            date: "2026-04-19",
+            department: "Acil",
+            complaint: "Baygınlık, nefes darlığı, bilinç bulanıklığı, akciğer sıvısı (plevral efüzyon)",
+            procedure: "Torasentez (drenaj) uygulandı, diüretik ve sonda takıldı. Serum tedavisi verildi.",
+            medChanges: "Delif ve Zaprotec kesildi, Fludex devam etti.",
+            extraNotes: "20.04.2026 taburcu. Evde sağlık başvurusu yapıldı, oksijen kullanımı arttırıldı."
+        }
+    ];
+
+    let nextId = records.length + 1;
+
+    // Tarihe göre sıralama (yeniden eskiye değil, artan tarihe göre - yani en eski üstte mi? genelde en güncel üstte istenir. ama kronolojik sıra için en yeniyi üstte yapalım.)
+    function sortRecordsByDateDesc() {
+        records.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('recordsTbody');
+        if (!tbody) return;
+        sortRecordsByDateDesc();
+        if (records.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-message">Henüz başvuru kaydı yok. Yukarıdan ekleyin.</td></tr>';
+            return;
+        }
+        tbody.innerHTML = '';
+        records.forEach(record => {
+            const row = tbody.insertRow();
+            row.insertCell(0).innerText = formatDate(record.date);
+            row.insertCell(1).innerText = record.department;
+            row.insertCell(2).innerText = record.complaint || '-';
+            row.insertCell(3).innerText = record.procedure || '-';
+            row.insertCell(4).innerText = record.medChanges || '-';
+            row.insertCell(5).innerText = record.extraNotes || '-';
+            const actionCell = row.insertCell(6);
+            actionCell.style.whiteSpace = 'nowrap';
+            const editBtn = document.createElement('button');
+            editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+            editBtn.className = 'edit-btn';
+            editBtn.title = 'Düzenle';
+            editBtn.onclick = () => editRecord(record.id);
+            const delBtn = document.createElement('button');
+            delBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+            delBtn.className = 'delete-btn';
+            delBtn.title = 'Sil';
+            delBtn.onclick = () => deleteRecord(record.id);
+            actionCell.appendChild(editBtn);
+            actionCell.appendChild(delBtn);
+        });
+        saveToLocalStorage();
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        const d = new Date(dateStr);
+        return d.toLocaleDateString('tr-TR');
+    }
+
+    function addRecord() {
+        const date = document.getElementById('visitDate').value;
+        const department = document.getElementById('visitDept').value;
+        const complaint = document.getElementById('complaint').value.trim();
+        const procedure = document.getElementById('procedure').value.trim();
+        const medChanges = document.getElementById('medChanges').value.trim();
+        const extraNotes = document.getElementById('extraNotes').value.trim();
+
+        if (!date) {
+            alert('Lütfen tarih seçin');
+            return;
+        }
+        if (!complaint && !procedure) {
+            alert('En azından şikayet veya yapılan işlem alanını doldurun.');
+            return;
+        }
+
+        const newRecord = {
+            id: 'rec' + Date.now(),
+            date: date,
+            department: department,
+            complaint: complaint || '-',
+            procedure: procedure || '-',
+            medChanges: medChanges || '-',
+            extraNotes: extraNotes || '-'
+        };
+        records.push(newRecord);
+        sortRecordsByDateDesc();
+        renderTable();
+        clearForm();
+    }
+
+    function editRecord(id) {
+        const record = records.find(r => r.id === id);
+        if (!record) return;
+        document.getElementById('visitDate').value = record.date;
+        document.getElementById('visitDept').value = record.department;
+        document.getElementById('complaint').value = record.complaint === '-' ? '' : record.complaint;
+        document.getElementById('procedure').value = record.procedure === '-' ? '' : record.procedure;
+        document.getElementById('medChanges').value = record.medChanges === '-' ? '' : record.medChanges;
+        document.getElementById('extraNotes').value = record.extraNotes === '-' ? '' : record.extraNotes;
+        
+        // Geçici olarak ekle butonunu değiştir
+        const addBtn = document.getElementById('addRecordBtn');
+        const originalText = addBtn.innerHTML;
+        addBtn.innerHTML = '<i class="fas fa-check"></i> Güncelle';
+        addBtn.style.background = '#f59e0b';
+        
+        const originalClick = addBtn.onclick;
+        addBtn.onclick = () => {
+            record.date = document.getElementById('visitDate').value;
+            record.department = document.getElementById('visitDept').value;
+            record.complaint = document.getElementById('complaint').value.trim() || '-';
+            record.procedure = document.getElementById('procedure').value.trim() || '-';
+            record.medChanges = document.getElementById('medChanges').value.trim() || '-';
+            record.extraNotes = document.getElementById('extraNotes').value.trim() || '-';
+            sortRecordsByDateDesc();
+            renderTable();
+            clearForm();
+            addBtn.innerHTML = originalText;
+            addBtn.style.background = '';
+            addBtn.onclick = originalClick;
+        };
+        
+        // Eğer iptal etmek için bir mekanizma: butonun eski haline dönmesi için 30 saniye sonra veya form temizlendiğinde
+        const resetEdit = () => {
+            addBtn.innerHTML = originalText;
+            addBtn.style.background = '';
+            addBtn.onclick = originalClick;
+        };
+        window.resetEditTimeout = setTimeout(resetEdit, 30000);
+        // form temizleme butonu gibi ekstra: 
+        const clearBtn = document.createElement('button');
+        // ancak kolaylık için form içinde bir iptal butonu eklemeyelim, kullanıcı tekrar ekle butonuna basınca düzelir.
+    }
+
+    function deleteRecord(id) {
+        if (confirm('Bu başvuru kaydını silmek istediğinize emin misiniz?')) {
+            records = records.filter(r => r.id !== id);
+            renderTable();
+        }
+    }
+
+    function clearForm() {
+        document.getElementById('visitDate').value = '2026-04-19';
+        document.getElementById('visitDept').value = 'Acil';
+        document.getElementById('complaint').value = '';
+        document.getElementById('procedure').value = '';
+        document.getElementById('medChanges').value = '';
+        document.getElementById('extraNotes').value = '';
+        // buton düzenleme durumunu sıfırla
+        const addBtn = document.getElementById('addRecordBtn');
+        if (addBtn.innerHTML.includes('Güncelle')) {
+            addBtn.innerHTML = '<i class="fas fa-save"></i> Kaydet (Tarihe Göre Sıralanacak)';
+            addBtn.style.background = '';
+            addBtn.onclick = () => addRecord();
+        }
+    }
+
+    // LocalStorage
+    function saveToLocalStorage() {
+        localStorage.setItem('emine_visits', JSON.stringify(records));
+    }
+
+    function loadFromLocalStorage() {
+        const saved = localStorage.getItem('emine_visits');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed) && parsed.length) {
+                    records = parsed;
+                    nextId = records.length + 1;
+                } else {
+                    setDefaultRecords();
+                }
+            } catch(e) { setDefaultRecords(); }
+        } else {
+            setDefaultRecords();
+        }
+        renderTable();
+    }
+
+    function setDefaultRecords() {
+        // Varsayılan veriler (zaten yukarıda tanımlı)
+        records = [
+            {
+                id: "rec1",
+                date: "2025-03-21",
+                department: "Acil",
+                complaint: "Kırıklık ağrısı, idrara çıkamama",
+                procedure: "Sonda takıldı, Parol verildi; NSR sempatik tedavi yapılmadı.",
+                medChanges: "Parol (gerektiğinde)",
+                extraNotes: "Acil hekimi değerlendirmesi: İdrar retansiyonu, gözlem önerildi."
+            },
+            {
+                id: "rec2",
+                date: "2025-03-23",
+                department: "Acil",
+                complaint: "İdrara çıkamama (tekrarlayan)",
+                procedure: "Serum tedavisi, idrar yolu enfeksiyonu nedeniyle antibiyotik başlandı (9 gün).",
+                medChanges: "Antibiyotik eklendi",
+                extraNotes: "Nefroloji konsültasyonu istendi."
+            },
+            {
+                id: "rec3",
+                date: "2025-03-25",
+                department: "Üroloji",
+                complaint: "İdrar yapma güçlüğü",
+                procedure: "İdrar sistemi değerlendirmesi, Toraks BT, kan tahlilleri",
+                medChanges: "-",
+                extraNotes: "BT: plevral efüzyon şüphesi."
+            },
+            {
+                id: "rec4",
+                date: "2025-09-25",
+                department: "Kardiyoloji",
+                complaint: "Öksürük, nefes darlığı (%91 satürasyon)",
+                procedure: "Ekokardiyografi, kardiyojenik ödem değerlendirmesi",
+                medChanges: "Afiladen başlandı",
+                extraNotes: "Sağ kalp yükü, diüretik tedavisi düzenlendi."
+            },
+            {
+                id: "rec5",
+                date: "2026-04-19",
+                department: "Acil",
+                complaint: "Baygınlık, nefes darlığı, bilinç bulanıklığı",
+                procedure: "Torasentez (drenaj), diüretik, sonda, serum",
+                medChanges: "Delif ve Zaprotec kesildi, Fludex devam",
+                extraNotes: "20.04.2026 taburcu, evde sağlık başvurusu."
+            }
+        ];
+    }
+
+    // Reset
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        if (confirm('Tüm başvuru kayıtlarını varsayılan örneklere sıfırlamak istediğinize emin misiniz? Eklediğiniz tüm veriler silinecek.')) {
+            setDefaultRecords();
+            renderTable();
+            clearForm();
+        }
+    });
+
+    // PDF
+    document.getElementById('pdfBtn').addEventListener('click', async () => {
+        const element = document.getElementById('reportContainer');
+        const btn = document.getElementById('pdfBtn');
+        const originalText = btn.innerText;
+        btn.innerText = '⏳ Oluşturuluyor...';
+        btn.disabled = true;
+        const opt = {
+            margin: [0.4, 0.4, 0.4, 0.4],
+            filename: 'Emine_Aydar_Hastane_Basvurulari.pdf',
+            image: { quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+        };
+        await html2pdf().set(opt).from(element).save();
+        btn.innerText = originalText;
+        btn.disabled = false;
+    });
+
+    document.getElementById('addRecordBtn').onclick = () => addRecord();
+
+    // Başlangıç
+    loadFromLocalStorage();
+</script>
+</body>
+</html>
